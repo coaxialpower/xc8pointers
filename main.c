@@ -58,6 +58,7 @@ void main(void) {
     init_test();
     printf("\n");
     report_compiler();
+    printf("Byte first test\n");
     printf("Setting flag\n");
     v.flag=1;
     v_timer_value=0;
@@ -72,11 +73,12 @@ void main(void) {
           *((wordptr)opts[aa].ptr) = opts[aa].defvalue;
           break;
 
+      };
     };
-  };
     printf("Flag (expect 1) is %i\n",v.flag);
     printf("Timer value (expect 500) is %i\n",v_timer_value);
 
+    printf("Word first test\n");
     printf("Setting flag\n");
     v.flag=1;
     v_timer_value=0;
@@ -91,8 +93,56 @@ void main(void) {
           *((byteptr)opts[aa].ptr) = opts[aa].defvalue;
           break;
 
+      };
     };
-  };
+    printf("Flag (expect 1) is %i\n",v.flag);
+    printf("Timer value (expect 500) is %i\n",v_timer_value);
+
+    printf("Mitigated test byte first\n");
+    printf("Setting flag\n");
+    v.flag=1;
+    v_timer_value=0;
+    printf("Flag is %i\n",v.flag);
+    printf("Running suspect code\n");  
+    for( aa=0; aa < optioncount; aa++) {
+      switch (opts[aa].type) {
+          byteptr bptr;
+          wordptr wptr;
+          case dvenum:
+          bptr = opts[aa].ptr;
+          *bptr = opts[aa].defvalue;
+          break;
+          case dvnumber:
+          wptr = opts[aa].ptr; 
+          *wptr = opts[aa].defvalue;
+          break;
+
+      };
+    };
+    printf("Flag (expect 1) is %i\n",v.flag);
+    printf("Timer value (expect 500) is %i\n",v_timer_value);
+
+    printf("Mitigated test word first\n");
+    printf("Setting flag\n");
+    v.flag=1;
+    v_timer_value=0;
+    printf("Flag is %i\n",v.flag);
+    printf("Running suspect code\n");  
+    for( aa=0; aa < optioncount; aa++) {
+      switch (opts[aa].type) {
+          byteptr bptr;
+          wordptr wptr;
+          case dvnumber:
+          wptr = opts[aa].ptr; 
+          *wptr = opts[aa].defvalue;
+          break;
+          case dvenum:
+          bptr = opts[aa].ptr;
+          *bptr = opts[aa].defvalue;
+          break;
+
+      };
+    };
     printf("Flag (expect 1) is %i\n",v.flag);
     printf("Timer value (expect 500) is %i\n",v_timer_value);
     end_test();
